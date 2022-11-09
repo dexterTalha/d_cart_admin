@@ -1,3 +1,4 @@
+import 'package:d_cart_admin/components/common_button.dart';
 import 'package:d_cart_admin/components/text_form_field.dart';
 import 'package:d_cart_admin/utils/mytheme.dart';
 import 'package:d_cart_admin/utils/responsive_builder.dart';
@@ -12,6 +13,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool isChecked = true;
+  bool isObscure = true;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +56,25 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           const SizedBox(height: 30),
-          const TextFormFieldComponent(
+          TextFormFieldComponent(
             title: "Your Email",
             hint: "email@address.com",
+            controller: _emailController,
           ),
           const SizedBox(height: 20),
           TextFormFieldComponent(
+            isObscure: isObscure,
             title: "Password",
+            controller: _passController,
             hint: "6+ characters required",
             suffixWidget: GestureDetector(
-              onTap: () {},
-              child: const Icon(
-                Icons.visibility,
+              onTap: () {
+                setState(() {
+                  isObscure = !isObscure;
+                });
+              },
+              child: Icon(
+                !isObscure ? Icons.visibility_off : Icons.visibility,
                 color: MyTheme.textFormBorder,
               ),
             ),
@@ -83,7 +94,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 isChecked = xyz ?? false;
               });
             },
-          )
+          ),
+          const SizedBox(height: 10),
+          CommonButton(
+            text: "Login",
+            textStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+            onPressed: () {},
+            borderRadius: 8,
+            verticalPadding: 10,
+          ),
         ],
       ),
     );

@@ -9,7 +9,9 @@ class TextFormFieldComponent extends StatelessWidget {
   final TextStyle? titleStyle;
   final TextStyle? hintStyle;
   final Widget? suffixWidget;
-  const TextFormFieldComponent({Key? key, this.suffixWidget, this.borderColor, this.title, this.hint, this.hintStyle, this.titleStyle}) : super(key: key);
+  final bool? isObscure;
+  final TextEditingController? controller;
+  const TextFormFieldComponent({Key? key, this.controller, this.isObscure, this.suffixWidget, this.borderColor, this.title, this.hint, this.hintStyle, this.titleStyle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,10 @@ class TextFormFieldComponent extends StatelessWidget {
           Container(
             height: 45,
             child: TextFormField(
+              controller: controller,
               textAlign: TextAlign.start,
               cursorColor: borderColor ?? MyTheme.textFormBorder,
+              obscureText: isObscure ?? false,
               decoration: InputDecoration(
                 suffixIcon: suffixWidget,
                 focusedBorder: OutlineInputBorder(
