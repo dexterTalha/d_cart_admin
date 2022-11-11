@@ -1,8 +1,10 @@
 import 'package:d_cart_admin/components/common_button.dart';
 import 'package:d_cart_admin/components/text_form_field.dart';
+import 'package:d_cart_admin/providers/login_provider.dart';
 import 'package:d_cart_admin/utils/mytheme.dart';
 import 'package:d_cart_admin/utils/responsive_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,6 +20,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passController = TextEditingController();
 
   late Size size;
+  late LoginProvider loginProvider;
+  @override
+  void initState() {
+    loginProvider = Provider.of<LoginProvider>(context, listen: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: size.width * 0.3,
                     ),
                   ),
-                  Expanded(
+                  const Expanded(
+                    flex: 1,
                     child: Text(
                       "LOGIN SCREEN",
                     ),
@@ -93,20 +102,20 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _emailController,
             ),
             const SizedBox(height: 20),
-            TextFormFieldComponent(
-              isObscure: isObscure,
-              title: "Password",
-              controller: _passController,
-              hint: "6+ characters required",
-              suffixWidget: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isObscure = !isObscure;
-                  });
-                },
-                child: Icon(
-                  !isObscure ? Icons.visibility_off : Icons.visibility,
-                  color: MyTheme.textFormBorder,
+            Consumer<LoginProvider>(
+              builder: (_, ref, child) => TextFormFieldComponent(
+                isObscure: ref.obscure,
+                title: "Password",
+                controller: _passController,
+                hint: "6+ characters required",
+                suffixWidget: GestureDetector(
+                  onTap: () {
+                    ref.toggleObscure();
+                  },
+                  child: Icon(
+                    !ref.obscure ? Icons.visibility_off : Icons.visibility,
+                    color: MyTheme.textFormBorder,
+                  ),
                 ),
               ),
             ),
@@ -127,15 +136,21 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
             const SizedBox(height: 10),
-            CommonButton(
-              text: "Login",
-              textStyle: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
+            Consumer<LoginProvider>(
+              builder: (_, ref, child) => CommonButton(
+                text: ref.isLoading ? "Loading..." : "Login",
+                textStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+                onPressed: ref.isLoading
+                    ? null
+                    : () {
+                        ref.login("username", "password");
+                      },
+                borderRadius: 8,
+                verticalPadding: 10,
               ),
-              onPressed: () {},
-              borderRadius: 8,
-              verticalPadding: 10,
             ),
           ],
         ),
