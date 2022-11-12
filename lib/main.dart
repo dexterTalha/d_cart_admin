@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LoginProvider()),
       ],
       child: MaterialApp(
+        theme: ThemeData(fontFamily: "Poppins"),
         debugShowCheckedModeBanner: false,
         home: LoginScreen(),
       ),
