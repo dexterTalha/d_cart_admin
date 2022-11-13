@@ -73,87 +73,90 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               padding: const EdgeInsets.all(20),
               width: double.maxFinite,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 20),
-                  const Text(
-                    "Signin",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 29,
-                      fontWeight: FontWeight.w500,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Signin",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 29,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  const Text(
-                    "Welcome back",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
+                    const Text(
+                      "Welcome back",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  TextFormFieldComponent(
-                    title: "Your Email",
-                    hint: "email@address.com",
-                    controller: _emailController,
-                  ),
-                  const SizedBox(height: 20),
-                  Consumer<LoginProvider>(
-                    builder: (_, ref, child) => TextFormFieldComponent(
-                      isObscure: ref.obscure,
-                      title: "Password",
-                      controller: _passController,
-                      hint: "6+ characters required",
-                      suffixWidget: GestureDetector(
-                        onTap: () {
-                          ref.toggleObscure();
-                        },
-                        child: Icon(
-                          !ref.obscure ? Icons.visibility_off : Icons.visibility,
-                          color: MyTheme.textFormBorder,
+                    const SizedBox(height: 30),
+                    TextFormFieldComponent(
+                      title: "Your Email",
+                      hint: "email@address.com",
+                      controller: _emailController,
+                    ),
+                    const SizedBox(height: 20),
+                    Consumer<LoginProvider>(
+                      builder: (_, ref, child) => TextFormFieldComponent(
+                        isObscure: ref.obscure,
+                        title: "Password",
+                        controller: _passController,
+                        hint: "6+ characters required",
+                        suffixWidget: GestureDetector(
+                          onTap: () {
+                            ref.toggleObscure();
+                          },
+                          child: Icon(
+                            !ref.obscure ? Icons.visibility_off : Icons.visibility,
+                            color: MyTheme.textFormBorder,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Consumer<LoginProvider>(
-                    builder: (_, ref, child) => CheckboxListTile(
-                      contentPadding: EdgeInsets.zero,
-                      checkboxShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3),
+                    const SizedBox(height: 10),
+                    Consumer<LoginProvider>(
+                      builder: (_, ref, child) => CheckboxListTile(
+                        contentPadding: EdgeInsets.zero,
+                        checkboxShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        value: ref.checked,
+                        checkColor: Colors.white,
+                        activeColor: MyTheme.textFormBorder,
+                        title: const Text("Remember me"),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                        onChanged: (checked) {
+                          ref.toggleCheck(checked ?? false);
+                        },
                       ),
-                      value: ref.checked,
-                      checkColor: Colors.white,
-                      activeColor: MyTheme.textFormBorder,
-                      title: const Text("Remember me"),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                      onChanged: (checked) {
-                        ref.toggleCheck(checked ?? false);
-                      },
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Consumer<LoginProvider>(
-                    builder: (_, ref, child) => CommonButton(
-                      text: ref.isLoading ? "Loading..." : "Login",
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
+                    const SizedBox(height: 10),
+                    Consumer<LoginProvider>(
+                      builder: (_, ref, child) => CommonButton(
+                        text: ref.isLoading ? "Loading..." : "Login",
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        onPressed: ref.isLoading
+                            ? null
+                            : () {
+                                ref.login("username", "password");
+                              },
+                        borderRadius: 8,
+                        verticalPadding: 10,
                       ),
-                      onPressed: ref.isLoading
-                          ? null
-                          : () {
-                              ref.login("username", "password");
-                            },
-                      borderRadius: 8,
-                      verticalPadding: 10,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

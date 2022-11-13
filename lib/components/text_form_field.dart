@@ -11,7 +11,9 @@ class TextFormFieldComponent extends StatelessWidget {
   final Widget? suffixWidget;
   final bool? isObscure;
   final TextEditingController? controller;
-  const TextFormFieldComponent({Key? key, this.controller, this.isObscure, this.suffixWidget, this.borderColor, this.title, this.hint, this.hintStyle, this.titleStyle}) : super(key: key);
+  const TextFormFieldComponent(
+      {Key? key, this.controller, this.isObscure, this.suffixWidget, this.borderColor, this.title, this.hint, this.hintStyle, this.titleStyle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +25,26 @@ class TextFormFieldComponent extends StatelessWidget {
             title ?? "Your Email",
             style: titleStyle ?? const TextStyle(color: Colors.black),
           ),
-          const SizedBox(height: 15),
-          Container(
-            height: 45,
-            child: TextFormField(
-              controller: controller,
-              textAlign: TextAlign.start,
-              cursorColor: borderColor ?? MyTheme.textFormBorder,
-              obscureText: isObscure ?? false,
-              decoration: InputDecoration(
-                suffixIcon: suffixWidget,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(
-                    color: borderColor ?? MyTheme.textFormBorder,
-                    width: 1,
-                  ),
+          const SizedBox(height: 10),
+          TextFormField(
+            controller: controller,
+            // textAlign: TextAlign.start,
+            cursorColor: borderColor ?? MyTheme.textFormBorder,
+            obscureText: isObscure ?? false,
+            decoration: InputDecoration(
+              constraints: BoxConstraints(maxHeight: 50),
+              suffixIcon: suffixWidget,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  color: borderColor ?? MyTheme.textFormBorder,
+                  width: 2,
                 ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                hintText: hint ?? "email@address.com",
               ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              hintText: hint ?? "email@address.com",
             ),
           )
         ],
