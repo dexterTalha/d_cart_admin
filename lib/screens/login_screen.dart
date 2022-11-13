@@ -109,7 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: "Password",
                         controller: _passController,
                         hint: "6+ characters required",
-                        suffixWidget: GestureDetector(
+                        suffixWidget: InkWell(
+                          splashColor: Colors.white,
+                          hoverColor: Colors.white,
                           onTap: () {
                             ref.toggleObscure();
                           },
