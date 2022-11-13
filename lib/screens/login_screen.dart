@@ -7,6 +7,7 @@ import 'package:d_cart_admin/utils/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,6 +21,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isObscure = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+
+  StateMachineController? machineController;
+  SMIInput<bool>? isChecking;
+  SMIInput<double>? numLook;
+  SMIInput<bool>? isHandsUp;
+  SMIInput<bool>? trigSuccess;
+  SMIInput<bool>? trigFail;
 
   late Size size;
   late LoginProvider loginProvider;
@@ -126,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Consumer<LoginProvider>(
                       builder: (_, ref, child) => CheckboxListTile(
                         contentPadding: EdgeInsets.zero,
+                        dense: true,
                         checkboxShape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(3),
                         ),
