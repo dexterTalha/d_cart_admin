@@ -10,9 +10,21 @@ class TextFormFieldComponent extends StatelessWidget {
   final TextStyle? hintStyle;
   final Widget? suffixWidget;
   final bool? isObscure;
+  final FocusNode? focusNode;
   final TextEditingController? controller;
+  final void Function(String)? onChange;
   const TextFormFieldComponent(
-      {Key? key, this.controller, this.isObscure, this.suffixWidget, this.borderColor, this.title, this.hint, this.hintStyle, this.titleStyle})
+      {Key? key,
+      this.controller,
+      this.onChange,
+      this.focusNode,
+      this.isObscure,
+      this.suffixWidget,
+      this.borderColor,
+      this.title,
+      this.hint,
+      this.hintStyle,
+      this.titleStyle})
       : super(key: key);
 
   @override
@@ -31,6 +43,8 @@ class TextFormFieldComponent extends StatelessWidget {
             // textAlign: TextAlign.start,
             cursorColor: borderColor ?? MyTheme.textFormBorder,
             obscureText: isObscure ?? false,
+            focusNode: focusNode,
+            onChanged: onChange,
             decoration: InputDecoration(
               constraints: BoxConstraints(maxHeight: 50),
               suffixIcon: suffixWidget,

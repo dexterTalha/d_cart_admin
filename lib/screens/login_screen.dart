@@ -21,6 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isObscure = true;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passFocus = FocusNode();
 
   StateMachineController? machineController;
   SMIInput<bool>? isChecking;
@@ -34,7 +36,28 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
+    _emailFocus.addListener(emailFocusListener);
+    _passFocus.addListener(passFocusListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailFocus.removeListener(emailFocusListener);
+    _passFocus.removeListener(passFocusListener);
+    // _emailFocus.dispose();
+    _emailController.dispose();
+    // _passFocus.dispose();
+    _passController.dispose();
+    super.dispose();
+  }
+
+  void emailFocusListener() {
+    isChecking?.change(_emailFocus.hasFocus);
+  }
+
+  void passFocusListener() {
+    isHandsUp?.change(_passFocus.hasFocus);
   }
 
   @override
@@ -81,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               padding: const EdgeInsets.all(20),
               width: double.maxFinite,
+              // color: MyTheme.blueBackground,
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Column(
@@ -88,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     const Text(
                       "Signin",
                       style: TextStyle(
@@ -104,16 +128,49 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    Visibility(
+                      visible: true,
+                      child: Center(
+                        child: Container(
+                          height: 200,
+                          width: 200,
+                          child: RiveAnimation.asset(
+                            "assets/rive_animation/login_anim.riv",
+                            stateMachines: const ["Login Machine"],
+                            // artboard: "assets/rive_animation/login_anim.riv",
+                            onInit: (board) {
+                              machineController = StateMachineController.fromArtboard(board, "Login Machine");
+
+                              if (machineController == null) {
+                                print("hi");
+                                return;
+                              }
+                              print("bye");
+                              board.addController(machineController!);
+                              isChecking = machineController?.findInput("isChecking");
+                              numLook = machineController?.findInput("numLook");
+                              isHandsUp = machineController?.findInput("isHandsUp");
+                              trigSuccess = machineController?.findInput("trigSuccess");
+                              trigFail = machineController?.findInput("trigFail");
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
                     TextFormFieldComponent(
                       title: "Your Email",
+                      focusNode: _emailFocus,
                       hint: "email@address.com",
                       controller: _emailController,
+                      onChange: (st) {
+                        numLook?.change(st.length.toDouble() * 2);
+                      },
                     ),
                     const SizedBox(height: 20),
                     Consumer<LoginProvider>(
                       builder: (_, ref, child) => TextFormFieldComponent(
                         isObscure: ref.obscure,
+                        focusNode: _passFocus,
                         title: "Password",
                         controller: _passController,
                         hint: "6+ characters required",
@@ -122,6 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           hoverColor: Colors.white,
                           onTap: () {
                             ref.toggleObscure();
+                            isHandsUp?.change(ref.obscure);
                           },
                           child: Icon(
                             !ref.obscure ? Icons.visibility_off : Icons.visibility,
@@ -159,8 +217,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         onPressed: ref.isLoading
                             ? null
-                            : () {
-                                ref.login("username", "password");
+                            : () async {
+                                await ref.login("username", "password");
+                                trigFail?.change(true);
                               },
                         borderRadius: 8,
                         verticalPadding: 10,
