@@ -6,8 +6,11 @@ import 'package:d_cart_admin/utils/mytheme.dart';
 import 'package:d_cart_admin/utils/responsive_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
+
+import '../utils/my_routes.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -38,6 +41,15 @@ class _LoginScreenState extends State<LoginScreen> {
     loginProvider = Provider.of<LoginProvider>(context, listen: false);
     _emailFocus.addListener(emailFocusListener);
     _passFocus.addListener(passFocusListener);
+
+    bool b = loginProvider.getLoggedInUser();
+    print("current user $b");
+    if (b) {
+      // Navigator.pushNamedAndRemoveUntil(context, MyRoute.dashboard, (route) => false);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go(MyRoute.dashboard);
+      });
+    }
     super.initState();
   }
 
@@ -104,7 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Container(
               padding: const EdgeInsets.all(20),
               width: double.maxFinite,
-              // color: MyTheme.blueBackground,
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Column(
@@ -129,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Visibility(
-                      visible: true,
+                      visible: false,
                       child: Center(
                         child: Container(
                           height: 200,
@@ -157,6 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 10),
                     TextFormFieldComponent(
                       title: "Your Email",
                       focusNode: _emailFocus,
@@ -218,8 +230,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: ref.isLoading
                             ? null
                             : () async {
-                                await ref.login("username", "password");
+                                bool isLogin = await ref.login(_emailController.text.trim(), _passController.text);
                                 trigFail?.change(true);
+                                if (isLogin && mounted) {
+                                  context.go(MyRoute.dashboard);
+                                }
                               },
                         borderRadius: 8,
                         verticalPadding: 10,
