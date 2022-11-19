@@ -1,6 +1,8 @@
+import 'package:d_cart_admin/providers/dashboard_provider.dart';
 import 'package:d_cart_admin/providers/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/my_routes.dart';
 import '../utils/responsive_builder.dart';
@@ -31,12 +33,101 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      primary: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: GestureDetector(
+    return Consumer<DashboardProvider>(
+      builder: (_, ref, child) {
+        return Scaffold(
+          primary: true,
+          // appBar: AppBar(
+          //   backgroundColor: Colors.transparent,
+          //   elevation: 0,
+          //   leading: GestureDetector(
+          //     onTap: () {
+          //       if (_scaffoldKey.currentState != null) {
+          //         if (_scaffoldKey.currentState!.isDrawerOpen) {
+          //           _scaffoldKey.currentState!.closeDrawer();
+          //         } else {
+          //           _scaffoldKey.currentState!.openDrawer();
+          //         }
+          //         ref.toggleMobileExpansion(value: _scaffoldKey.currentState!.isDrawerOpen);
+          //       } else {
+          //         ref.toggleExpansion();
+          //       }
+          //     },
+          //     child: Row(
+          //       children: [
+          //         Visibility(
+          //           visible: _scaffoldKey.currentState != null ? true : ref.isDrawerExpanded,
+          //           child: Container(
+          //             width: 20,
+          //             color: Colors.green,
+          //           ),
+          //         ),
+          //         Icon(
+          //           _scaffoldKey.currentState != null
+          //               ? (ref.isMobileDrawerOpen ? Icons.close_rounded : Icons.menu)
+          //               : (ref.isDrawerExpanded ? Icons.close_rounded : Icons.menu),
+          //           color: Colors.black,
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          body: ResponsiveBuilder(
+            mobile: Scaffold(
+              key: _scaffoldKey,
+              drawer: Drawer(
+                child: SizedBox(
+                  width: size.width * 0.7,
+                  child: drawerWidget(),
+                ),
+              ),
+              body: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (_scaffoldKey.currentState != null) {
+                        if (_scaffoldKey.currentState!.isDrawerOpen) {
+                          _scaffoldKey.currentState!.closeDrawer();
+                        } else {
+                          _scaffoldKey.currentState!.openDrawer();
+                        }
+                        ref.toggleMobileExpansion(value: _scaffoldKey.currentState!.isDrawerOpen);
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Visibility(
+                          visible: true,
+                          child: Container(
+                            width: 20,
+                            color: Colors.green,
+                          ),
+                        ),
+                        Icon(
+                          _scaffoldKey.currentState != null
+                              ? (ref.isMobileDrawerOpen ? Icons.close_rounded : Icons.menu)
+                              : (ref.isDrawerExpanded ? Icons.close_rounded : Icons.menu),
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(child: logoutButton()),
+                ],
+              ),
+            ),
+            tablet: webDashboard(ref.isDrawerExpanded, size, ref),
+            web: webDashboard(ref.isDrawerExpanded, size, ref),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget webDashboard(bool expanded, Size size, DashboardProvider ref) {
+    return Column(
+      children: [
+        GestureDetector(
           onTap: () {
             if (_scaffoldKey.currentState != null) {
               if (_scaffoldKey.currentState!.isDrawerOpen) {
@@ -44,40 +135,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
               } else {
                 _scaffoldKey.currentState!.openDrawer();
               }
+              ref.toggleMobileExpansion(value: _scaffoldKey.currentState!.isDrawerOpen);
             } else {
-              print("hi");
+              ref.toggleExpansion();
             }
           },
-          child: Icon(
-            Icons.menu,
-            color: Colors.black,
+          child: Row(
+            children: [
+              Visibility(
+                visible: _scaffoldKey.currentState != null ? true : ref.isDrawerExpanded,
+                child: Container(
+                  width: 100,
+                  color: Colors.green,
+                ),
+              ),
+              Icon(
+                _scaffoldKey.currentState != null
+                    ? (ref.isMobileDrawerOpen ? Icons.close_rounded : Icons.menu)
+                    : (ref.isDrawerExpanded ? Icons.close_rounded : Icons.menu),
+                color: Colors.black,
+              ),
+            ],
           ),
         ),
-      ),
-      body: ResponsiveBuilder(
-        mobile: Scaffold(
-          key: _scaffoldKey,
-          drawer: Drawer(
-            child: SizedBox(
-              width: size.width * 0.7,
-              child: drawerWidget(),
-            ),
-          ),
-          body: logoutButton(),
-        ),
-        tablet: webDashboard(),
-        web: webDashboard(),
-      ),
-    );
-  }
-
-  Widget webDashboard() {
-    return Row(
-      children: [
-        Expanded(flex: 1, child: drawerWidget()),
         Expanded(
-          flex: 14,
-          child: logoutButton(),
+          child: Row(
+            children: [
+              AnimatedContainer(
+                width: expanded ? size.width * 0.2 : 100,
+                duration: const Duration(
+                  milliseconds: 300,
+                ),
+                child: drawerWidget(),
+              ),
+              Expanded(
+                child: logoutButton(),
+              ),
+            ],
+          ),
         ),
       ],
     );
