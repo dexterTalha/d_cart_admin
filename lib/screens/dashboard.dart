@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../components/drawer_widget.dart';
 import '../utils/my_routes.dart';
 import '../utils/responsive_builder.dart';
 
@@ -96,13 +97,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     },
                     child: Row(
                       children: [
-                        Visibility(
-                          visible: true,
-                          child: Container(
-                            width: 20,
-                            color: Colors.green,
-                          ),
-                        ),
+                        // Visibility(
+                        //   visible: false,
+                        //   child: Container(
+                        //     width: 20,
+                        //     height: 50,
+                        //     color: Colors.green,
+                        //   ),
+                        // ),
                         Icon(
                           _scaffoldKey.currentState != null
                               ? (ref.isMobileDrawerOpen ? Icons.close_rounded : Icons.menu)
@@ -142,12 +144,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           },
           child: Row(
             children: [
-              Visibility(
-                visible: _scaffoldKey.currentState != null ? true : ref.isDrawerExpanded,
-                child: Container(
-                  width: 100,
-                  color: Colors.green,
-                ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset('assets/png/logo.png', height: 50),
               ),
               Icon(
                 _scaffoldKey.currentState != null
@@ -161,13 +160,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         Expanded(
           child: Row(
             children: [
-              AnimatedContainer(
-                width: expanded ? size.width * 0.2 : 100,
-                duration: const Duration(
-                  milliseconds: 300,
-                ),
-                child: drawerWidget(),
-              ),
+              DrawerWidget(isExpanded: expanded),
               Expanded(
                 child: logoutButton(),
               ),
