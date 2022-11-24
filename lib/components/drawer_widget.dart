@@ -1,5 +1,7 @@
+import 'package:d_cart_admin/model/menu_model.dart';
 import 'package:d_cart_admin/utils/mytheme.dart';
 import 'package:flutter/material.dart';
+import '../utils/constants.dart';
 
 class DrawerWidget extends StatelessWidget {
   final bool? isExpanded;
@@ -14,44 +16,17 @@ class DrawerWidget extends StatelessWidget {
   * 5. Delivery Man Management
   * */
 
-  /* https://6ammart-admin.6amtech.com/admin
-  TODO: CREATE JSON FOR DRAWER
-  {
-  "data": [
-    {
-      "title": "Dashboard",
-      "child": [],
-      "icon": ""
-    },
-    {
-      "title": "POS",
-      "child": [],
-      "icon": ""
-    },
-    {
-      "title": "Order Management",
-      "child": [
-        {
-          "title": "Orders",
-          "icon": ""
-        },
-         {
-          "title": "Order Refunds",
-          "icon": ""
-        },
-        {
-          "title": "Dispatch",
-          "icon": ""
-        }
-      ],
-      "icon": ""
-    }
-  ]
-}
-*/
-
   @override
   Widget build(BuildContext context) {
+    List<MenuModel> menuList = Constants.data.map((e) => MenuModel.fromJson(e)).toList();
+    for (MenuModel m in menuList) {
+      print(m.title);
+    }
+    // for (Map<String, dynamic> map in Constants.data) {
+    //   MenuModel menuModel = MenuModel.fromJson(map);
+    //   menuList.add(menuModel);
+    // }
+
     final size = MediaQuery.of(context).size;
     return AnimatedContainer(
       width: (isExpanded ?? true) ? size.width * 0.2 : 100,

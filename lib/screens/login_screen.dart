@@ -140,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Visibility(
-                      visible: false,
+                      visible: true,
                       child: Center(
                         child: Container(
                           height: 200,
@@ -231,7 +231,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? null
                             : () async {
                                 bool isLogin = await ref.login(_emailController.text.trim(), _passController.text);
-                                trigFail?.change(true);
+
+                                trigFail?.change(!isLogin);
+
                                 if (isLogin && mounted) {
                                   context.go(MyRoute.dashboard);
                                 }
