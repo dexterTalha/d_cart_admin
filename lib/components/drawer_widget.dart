@@ -5,7 +5,8 @@ import '../utils/constants.dart';
 
 class DrawerWidget extends StatelessWidget {
   final bool? isExpanded;
-  const DrawerWidget({Key? key, this.isExpanded}) : super(key: key);
+  final List<MenuModel> menuList;
+  const DrawerWidget({Key? key, this.isExpanded, required this.menuList}) : super(key: key);
 
   /*
   * dashboard POS
@@ -18,15 +19,6 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<MenuModel> menuList = Constants.data.map((e) => MenuModel.fromJson(e)).toList();
-    for (MenuModel m in menuList) {
-      print(m.title);
-    }
-    // for (Map<String, dynamic> map in Constants.data) {
-    //   MenuModel menuModel = MenuModel.fromJson(map);
-    //   menuList.add(menuModel);
-    // }
-
     final size = MediaQuery.of(context).size;
     return AnimatedContainer(
       width: (isExpanded ?? true) ? size.width * 0.2 : 100,
@@ -35,7 +27,26 @@ class DrawerWidget extends StatelessWidget {
       ),
       child: Container(
         color: MyTheme.drawerBackgroundColor,
-        child: Container(),
+        child: ListView.builder(
+          itemCount: menuList.length,
+          itemBuilder: (_, index) {
+            MenuModel m = menuList[index];
+            if (m.icon == null) {
+              return (isExpanded ?? true)
+                  ? Text(
+                      m.title ?? "",
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : Text("--");
+            }
+            return Row(
+              children: [
+                Icon(m.icon),
+                Text(m.title ?? "NA"),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

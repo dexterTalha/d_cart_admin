@@ -1,10 +1,12 @@
 import 'package:d_cart_admin/providers/dashboard_provider.dart';
 import 'package:d_cart_admin/providers/login_provider.dart';
+import 'package:d_cart_admin/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../components/drawer_widget.dart';
+import '../model/menu_model.dart';
 import '../utils/my_routes.dart';
 import '../utils/responsive_builder.dart';
 
@@ -17,10 +19,15 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
+  List<MenuModel> menuList = [];
   @override
   void initState() {
-    bool b = LoginProvider().getLoggedInUser();
+    bool b = true; //LoginProvider().getLoggedInUser();
+    menuList = Constants.data.map((e) => MenuModel.fromJson(e)).toList();
+    // for(Map<String, dynamic> map in Constants.data){
+    //   MenuModel m = MenuModel.fromJson(map);
+    //   menuList.add(m);
+    // }
     print("current user $b");
     if (!b) {
       // Navigator.pushNamedAndRemoveUntil(context, MyRoute.dashboard, (route) => false);
@@ -160,7 +167,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         Expanded(
           child: Row(
             children: [
-              DrawerWidget(isExpanded: expanded),
+              DrawerWidget(isExpanded: expanded, menuList: menuList),
               Expanded(
                 child: logoutButton(),
               ),
