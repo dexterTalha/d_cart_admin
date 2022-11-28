@@ -6,6 +6,14 @@ class DashboardProvider with ChangeNotifier {
 
   bool get isDrawerExpanded => _isDrawerExpanded;
   bool get isMobileDrawerOpen => _isMobileDrawerOpen;
+  int _activeDrawer = -1;
+
+  int get activeDrawerIndex => _activeDrawer;
+
+  void setActiveDrawer(int value) {
+    _activeDrawer = value;
+    notifyListeners();
+  }
 
   void toggleExpansion({bool? value}) {
     print("DASHBOARD");
