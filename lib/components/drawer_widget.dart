@@ -27,66 +27,52 @@ class DrawerWidget extends StatelessWidget {
     return Consumer<DashboardProvider>(
       builder: (_, ref, child) {
         return AnimatedContainer(
-          width: (isExpanded ?? true) ? size.width * 0.2 : 100,
+          width: (isExpanded ?? true) ? size.width * 0.2 : 80,
           duration: const Duration(
             milliseconds: 300,
           ),
           child: Container(
             color: MyTheme.drawerBackgroundColor,
             child: ListView(
-              children: const [
-                SizedBox(height: 20),
+              children: [
+                const SizedBox(height: 20),
                 DrawerItem(
                   title: "Dashboard",
                   leading: Icons.home_outlined,
                   id: 1,
+                  isExpanded: isExpanded ?? false,
                 ),
                 DrawerItem(
                   title: "POS",
                   leading: Icons.shopping_basket_outlined,
                   id: 2,
+                  isExpanded: isExpanded ?? false,
                 ),
                 DrawerHeadingText(
                   title: "order management",
+                  isExpanded: isExpanded ?? false,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 DrawerItem(
                   title: "Orders",
                   leading: Icons.shopping_cart,
                   id: 3,
+                  isExpanded: isExpanded ?? false,
                 ),
                 DrawerItem(
                   title: "Order Refunds",
                   leading: Icons.receipt_long,
                   id: 4,
+                  isExpanded: isExpanded ?? false,
                 ),
                 DrawerItem(
                   title: "Dispatch",
                   leading: Icons.speed_sharp,
                   id: 5,
+                  isExpanded: isExpanded ?? false,
                 ),
               ],
             ),
-            /*child: ListView.builder(
-              itemCount: menuList.length,
-              itemBuilder: (_, index) {
-                MenuModel m = menuList[index];
-                if (m.icon == null) {
-                  return (isExpanded ?? true)
-                      ? Text(
-                          m.title ?? "",
-                          style: TextStyle(color: Colors.white),
-                        )
-                      : Text("--");
-                }
-                return DrawerItem(
-                  title: m.title,
-                  onTap: () {},
-                  leading: m.icon,
-                  isActive: index == 0,
-                );
-              },
-            ),*/
           ),
         );
       },
