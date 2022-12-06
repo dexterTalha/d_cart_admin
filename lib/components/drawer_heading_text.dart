@@ -20,6 +20,6 @@ class DrawerHeadingText extends StatelessWidget {
               ),
             ),
           )
-        : Icon(Icons.more_horiz, color: MyTheme.drawerSubHeadingColor);
+        : const Icon(Icons.more_horiz, color: MyTheme.drawerSubHeadingColor);
   }
 }

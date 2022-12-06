@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 print("hi");
                                 return;
                               }
-                              print("bye");
+
                               board.addController(machineController!);
                               isChecking = machineController?.findInput("isChecking");
                               numLook = machineController?.findInput("numLook");

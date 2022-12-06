@@ -86,39 +86,40 @@ class _DashboardScreenState extends State<DashboardScreen> {
               drawer: Drawer(
                 child: SizedBox(
                   width: size.width * 0.7,
-                  child: drawerWidget(),
+                  child: DrawerWidget(
+                      isExpanded: true,
+                      menuList: menuList,
+                      onTap: () {
+                        print("hi");
+                        _scaffoldKey.currentState!.closeDrawer();
+                        ref.toggleMobileExpansion(value: false);
+                      }),
                 ),
               ),
+              onDrawerChanged: (b) => ref.toggleMobileExpansion(value: b),
               body: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (_scaffoldKey.currentState != null) {
-                        if (_scaffoldKey.currentState!.isDrawerOpen) {
-                          _scaffoldKey.currentState!.closeDrawer();
-                        } else {
-                          _scaffoldKey.currentState!.openDrawer();
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_scaffoldKey.currentState != null) {
+                          if (_scaffoldKey.currentState!.isDrawerOpen) {
+                            _scaffoldKey.currentState!.closeDrawer();
+                          } else {
+                            _scaffoldKey.currentState!.openDrawer();
+                          }
+                          ref.toggleMobileExpansion(value: _scaffoldKey.currentState!.isDrawerOpen);
                         }
-                        ref.toggleMobileExpansion(value: _scaffoldKey.currentState!.isDrawerOpen);
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        // Visibility(
-                        //   visible: false,
-                        //   child: Container(
-                        //     width: 20,
-                        //     height: 50,
-                        //     color: Colors.green,
-                        //   ),
-                        // ),
-                        Icon(
-                          _scaffoldKey.currentState != null
-                              ? (ref.isMobileDrawerOpen ? Icons.close_rounded : Icons.menu)
-                              : (ref.isDrawerExpanded ? Icons.close_rounded : Icons.menu),
-                          color: Colors.black,
-                        ),
-                      ],
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            (ref.isMobileDrawerOpen ? Icons.close_rounded : Icons.menu),
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(child: logoutButton()),
@@ -138,16 +139,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       children: [
         GestureDetector(
           onTap: () {
-            if (_scaffoldKey.currentState != null) {
-              if (_scaffoldKey.currentState!.isDrawerOpen) {
-                _scaffoldKey.currentState!.closeDrawer();
-              } else {
-                _scaffoldKey.currentState!.openDrawer();
-              }
-              ref.toggleMobileExpansion(value: _scaffoldKey.currentState!.isDrawerOpen);
-            } else {
-              ref.toggleExpansion();
-            }
+            ref.toggleExpansion();
           },
           child: Row(
             children: [
@@ -156,9 +148,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Image.asset('assets/png/logo.png', height: 50),
               ),
               Icon(
-                _scaffoldKey.currentState != null
-                    ? (ref.isMobileDrawerOpen ? Icons.close_rounded : Icons.menu)
-                    : (ref.isDrawerExpanded ? Icons.close_rounded : Icons.menu),
+                ref.isDrawerExpanded ? Icons.close_rounded : Icons.menu,
                 color: Colors.black,
               ),
             ],
