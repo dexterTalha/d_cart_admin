@@ -1,6 +1,8 @@
 import 'package:d_cart_admin/providers/dashboard_provider.dart';
 import 'package:d_cart_admin/providers/login_provider.dart';
 import 'package:d_cart_admin/utils/constants.dart';
+import 'package:d_cart_admin/utils/mytheme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +21,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final User? user = FirebaseAuth.instance.currentUser;
   List<MenuModel> menuList = [];
   @override
   void initState() {
@@ -136,23 +139,81 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget webDashboard(bool expanded, Size size, DashboardProvider ref) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        GestureDetector(
-          onTap: () {
-            ref.toggleExpansion();
-          },
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset('assets/png/logo.png', height: 50),
-              ),
-              Icon(
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset('assets/png/logo.png', height: 50),
+            ),
+            GestureDetector(
+              onTap: () {
+                ref.toggleExpansion();
+              },
+              child: Icon(
                 ref.isDrawerExpanded ? Icons.close_rounded : Icons.menu,
                 color: Colors.black,
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: Container(),
+            ),
+            Container(
+              padding: const EdgeInsets.only(right: 30, top: 10, bottom: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.arrow_drop_down, color: MyTheme.drawerBackgroundColor),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        "John Doe",
+                        style: TextStyle(fontWeight: FontWeight.bold, color: MyTheme.drawerBackgroundColor),
+                      ),
+                      Text(
+                        user?.email ?? "",
+                        style: const TextStyle(color: Colors.black54, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 10),
+                  Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(80),
+                          child: Image.asset("assets/png/user_image.png"),
+                        ),
+                      ),
+                      Positioned(
+                        right: 2,
+                        bottom: 3,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Container(
+                            height: 8,
+                            width: 8,
+                            margin: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         Expanded(
           child: Row(

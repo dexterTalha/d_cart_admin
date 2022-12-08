@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Visibility(
                       visible: true,
                       child: Center(
-                        child: Container(
+                        child: SizedBox(
                           height: 200,
                           width: 200,
                           child: RiveAnimation.asset(
