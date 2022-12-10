@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../components/drawer_widget.dart';
+import '../components/profile_menu_widget.dart';
 import '../model/menu_model.dart';
 import '../utils/my_routes.dart';
 import '../utils/responsive_builder.dart';
@@ -23,6 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final User? user = FirebaseAuth.instance.currentUser;
   List<MenuModel> menuList = [];
+
   @override
   void initState() {
     bool b = true; //LoginProvider().getLoggedInUser();
@@ -48,41 +50,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       builder: (_, ref, child) {
         return Scaffold(
           primary: true,
-          // appBar: AppBar(
-          //   backgroundColor: Colors.transparent,
-          //   elevation: 0,
-          //   leading: GestureDetector(
-          //     onTap: () {
-          //       if (_scaffoldKey.currentState != null) {
-          //         if (_scaffoldKey.currentState!.isDrawerOpen) {
-          //           _scaffoldKey.currentState!.closeDrawer();
-          //         } else {
-          //           _scaffoldKey.currentState!.openDrawer();
-          //         }
-          //         ref.toggleMobileExpansion(value: _scaffoldKey.currentState!.isDrawerOpen);
-          //       } else {
-          //         ref.toggleExpansion();
-          //       }
-          //     },
-          //     child: Row(
-          //       children: [
-          //         Visibility(
-          //           visible: _scaffoldKey.currentState != null ? true : ref.isDrawerExpanded,
-          //           child: Container(
-          //             width: 20,
-          //             color: Colors.green,
-          //           ),
-          //         ),
-          //         Icon(
-          //           _scaffoldKey.currentState != null
-          //               ? (ref.isMobileDrawerOpen ? Icons.close_rounded : Icons.menu)
-          //               : (ref.isDrawerExpanded ? Icons.close_rounded : Icons.menu),
-          //           color: Colors.black,
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
           body: ResponsiveBuilder(
             mobile: Scaffold(
               key: _scaffoldKey,
@@ -90,13 +57,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: SizedBox(
                   width: size.width * 0.7,
                   child: DrawerWidget(
-                      isExpanded: true,
-                      menuList: menuList,
-                      onTap: () {
-                        print("hi");
-                        _scaffoldKey.currentState!.closeDrawer();
-                        ref.toggleMobileExpansion(value: false);
-                      }),
+                    isExpanded: true,
+                    menuList: const [],
+                    onTap: () {
+                      _scaffoldKey.currentState!.closeDrawer();
+                      ref.toggleMobileExpansion(value: false);
+                    },
+                  ),
                 ),
               ),
               onDrawerChanged: (b) => ref.toggleMobileExpansion(value: b),
@@ -159,60 +126,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Expanded(
               child: Container(),
             ),
-            Container(
-              padding: const EdgeInsets.only(right: 30, top: 10, bottom: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(Icons.arrow_drop_down, color: MyTheme.drawerBackgroundColor),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        "John Doe",
-                        style: TextStyle(fontWeight: FontWeight.bold, color: MyTheme.drawerBackgroundColor),
-                      ),
-                      Text(
-                        user?.email ?? "",
-                        style: const TextStyle(color: Colors.black54, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.white,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(80),
-                          child: Image.asset("assets/png/user_image.png"),
-                        ),
-                      ),
-                      Positioned(
-                        right: 2,
-                        bottom: 3,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Container(
-                            height: 8,
-                            width: 8,
-                            margin: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            ProfileMenuWidget(),
           ],
         ),
         Expanded(
