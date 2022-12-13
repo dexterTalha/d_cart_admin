@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../providers/login_provider.dart';
+import '../utils/my_routes.dart';
 import '../utils/mytheme.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
@@ -27,13 +30,32 @@ class ProfileMenuWidget extends StatelessWidget {
             ),
             items: [
               PopupMenuItem(
+                onTap: () {},
                 child: profileNameAndImage(isMain: false),
               ),
+              getDividerPopup(),
               PopupMenuItem(
-                child: Container(
-                  height: 30,
-                  color: Colors.green,
-                  width: double.maxFinite,
+                height: 30,
+                onTap: () {},
+                padding: const EdgeInsets.only(left: 10),
+                child: const Text(
+                  "Settings",
+                  style: TextStyle(fontSize: 14),
+                ),
+              ),
+              getDividerPopup(),
+              PopupMenuItem(
+                height: 30,
+                onTap: () async {
+                  await LoginProvider().logout();
+
+                  // ignore: use_build_context_synchronously
+                  context.go(MyRoute.login);
+                },
+                padding: const EdgeInsets.only(left: 10),
+                child: const Text(
+                  "Sign Out",
+                  style: TextStyle(fontSize: 14),
                 ),
               ),
             ],
@@ -63,9 +85,9 @@ class ProfileMenuWidget extends StatelessWidget {
         Column(
           crossAxisAlignment: isMain ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            const Text(
-              "John Doe",
-              style: TextStyle(fontWeight: FontWeight.bold, color: MyTheme.drawerBackgroundColor),
+            Text(
+              "John ${isMain ? "Doe" : ""}",
+              style: const TextStyle(fontWeight: FontWeight.bold, color: MyTheme.drawerBackgroundColor),
             ),
             Text(
               user?.email ?? "",
@@ -113,6 +135,15 @@ class ProfileMenuWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  PopupMenuItem getDividerPopup() {
+    return const PopupMenuItem(
+      enabled: false,
+      padding: EdgeInsets.zero,
+      height: 10,
+      child: Divider(),
     );
   }
 }
