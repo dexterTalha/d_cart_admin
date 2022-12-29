@@ -1,3 +1,4 @@
+import 'package:d_cart_admin/components/dashboard_major_stats_block.dart';
 import 'package:d_cart_admin/providers/dashboard_provider.dart';
 import 'package:d_cart_admin/providers/login_provider.dart';
 import 'package:d_cart_admin/utils/constants.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../components/drawer_widget.dart';
 import '../components/profile_menu_widget.dart';
+import '../components/text_widget.dart';
 import '../model/menu_model.dart';
 import '../utils/my_routes.dart';
 import '../utils/responsive_builder.dart';
@@ -92,7 +94,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ),
-                  Expanded(child: logoutButton()),
+                  Expanded(child: mainWidget()),
                 ],
               ),
             ),
@@ -134,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             children: [
               DrawerWidget(isExpanded: expanded, menuList: menuList),
               Expanded(
-                child: logoutButton(),
+                child: mainWidget(),
               ),
             ],
           ),
@@ -143,9 +145,109 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget logoutButton() {
-    return Center(
-      child: Text("DASHBOARD"),
+  Widget mainWidget() {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      height: double.maxFinite,
+      width: double.maxFinite,
+      child: ListView(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: TextWidget(
+              text: "Welcome, John",
+              size: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: TextWidget(
+              text: "Hello, here you can manage your orders",
+              size: 14,
+              color: Colors.grey,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: const [
+                      Icon(Icons.bar_chart),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: TextWidget(
+                            text: "Dashboard order statistics",
+                            size: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      // DropdownButtonFormField(
+                      //   decoration: InputDecoration(
+                      //     border: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //   ),
+                      //   value: "Overall Statistics",
+                      //   items: ["Overall Statistics", "Today's Statistics"]
+                      //       .map(
+                      //         (e) => DropdownMenuItem(value: e, child: Text(e)),
+                      //       )
+                      //       .toList(),
+                      //   onChanged: (st) {},
+                      // ),
+                    ],
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    direction: Axis.horizontal,
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: const [
+                      DashboardMajorStatsBlock(
+                        index: 1,
+                        color: MyTheme.dashboard_1,
+                        title: "Unassigned orders",
+                        count: "24",
+                      ),
+                      DashboardMajorStatsBlock(
+                        index: 2,
+                        color: MyTheme.dashboard_2,
+                        title: "Ongoing orders",
+                        count: "2",
+                      ),
+                      DashboardMajorStatsBlock(
+                        index: 3,
+                        color: MyTheme.dashboard_3,
+                        title: "Preparing in stores",
+                        count: "6",
+                      ),
+                      DashboardMajorStatsBlock(
+                        index: 4,
+                        color: MyTheme.dashboard_4,
+                        title: "Picked up",
+                        count: "2",
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

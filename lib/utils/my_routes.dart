@@ -5,7 +5,8 @@ import 'package:go_router/go_router.dart';
 
 class MyRoute {
   static const String login = "/login";
-  static const String dashboard = "/dashboard";
+  static const String dashboard = "/home/dashboard";
+  static const String pos = "/home/pos";
   static final GoRouter router = GoRouter(
     initialLocation: login,
     // errorBuilder: ,
