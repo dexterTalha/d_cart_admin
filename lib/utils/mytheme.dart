@@ -13,4 +13,5 @@ class MyTheme {
   static const Color dashboard_2 = Color(0xfffeb019);
   static const Color dashboard_3 = Color(0xff00aa6d);
   static const Color dashboard_4 = Color(0xffff6d6d);
+  static const Color dashboardMinor = Color(0xFFf8f9fb);
 }

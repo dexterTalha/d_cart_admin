@@ -1,4 +1,5 @@
 import 'package:d_cart_admin/components/dashboard_major_stats_block.dart';
+import 'package:d_cart_admin/components/dashboard_minor_stats_block.dart';
 import 'package:d_cart_admin/providers/dashboard_provider.dart';
 import 'package:d_cart_admin/providers/login_provider.dart';
 import 'package:d_cart_admin/utils/constants.dart';
@@ -29,7 +30,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
-    bool b = LoginProvider().getLoggedInUser();
+    bool b = true; //LoginProvider().getLoggedInUser();
     menuList = Constants.data.map((e) => MenuModel.fromJson(e)).toList();
     // for(Map<String, dynamic> map in Constants.data){
     //   MenuModel m = MenuModel.fromJson(map);
@@ -238,6 +239,41 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         index: 4,
                         color: MyTheme.dashboard_4,
                         title: "Picked up",
+                        count: "2",
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    direction: Axis.horizontal,
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: const [
+                      DashboardMinorStatBlock(
+                        index: 1,
+                        backgroundColor: MyTheme.dashboard_3,
+                        title: "Delivered",
+                        count: "24",
+                      ),
+                      DashboardMinorStatBlock(
+                        index: 2,
+                        backgroundColor: MyTheme.dashboard_1,
+                        title: "Cancelled",
+                        count: "2",
+                      ),
+                      DashboardMinorStatBlock(
+                        index: 3,
+                        backgroundColor: MyTheme.dashboard_4,
+                        title: "Payment Failed",
+                        count: "6",
+                      ),
+                      DashboardMinorStatBlock(
+                        index: 4,
+                        backgroundColor: MyTheme.dashboard_2,
+                        title: "Refunded",
                         count: "2",
                       ),
                     ],
