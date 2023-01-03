@@ -29,7 +29,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
-    bool b = true; //LoginProvider().getLoggedInUser();
+    bool b = LoginProvider().getLoggedInUser();
     menuList = Constants.data.map((e) => MenuModel.fromJson(e)).toList();
     // for(Map<String, dynamic> map in Constants.data){
     //   MenuModel m = MenuModel.fromJson(map);

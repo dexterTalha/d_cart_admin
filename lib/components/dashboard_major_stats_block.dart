@@ -1,5 +1,6 @@
 import 'package:d_cart_admin/components/text_widget.dart';
 import 'package:d_cart_admin/utils/mytheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DashboardMajorStatsBlock extends StatelessWidget {
@@ -8,13 +9,23 @@ class DashboardMajorStatsBlock extends StatelessWidget {
   final String? title;
   final String? asset;
   final int? index;
-  const DashboardMajorStatsBlock({Key? key, this.color, this.count, this.title, this.asset, this.index}) : super(key: key);
+  const DashboardMajorStatsBlock({Key? key, this.color, this.count, this.title, this.asset, this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (_, cons) {
+        return blockUI(context, cons.maxWidth <= 360 ? cons.maxWidth : (cons.maxWidth * 0.24));
+      },
+    );
+  }
+
+  Widget blockUI(BuildContext context, [double width = 200]) {
     return Container(
-      width: 200,
+      width: width,
       height: 150,
+      constraints: BoxConstraints(minWidth: width > 360 ? 250 : width),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: (color ?? MyTheme.dashboard_1).withOpacity(0.15),
@@ -27,7 +38,7 @@ class DashboardMajorStatsBlock extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 15, right: 15),
               child: Image.asset(
-                "png/dashboard/$index.png",
+                "${kIsWeb ? "" : "assets/"}png/dashboard/$index.png",
                 height: 30,
               ),
             ),
