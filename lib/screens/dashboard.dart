@@ -30,13 +30,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
-    bool b = true; //LoginProvider().getLoggedInUser();
+    bool b = LoginProvider().getLoggedInUser();
     menuList = Constants.data.map((e) => MenuModel.fromJson(e)).toList();
     // for(Map<String, dynamic> map in Constants.data){
     //   MenuModel m = MenuModel.fromJson(map);
     //   menuList.add(m);
     // }
-    print("current user $b");
+
     if (!b) {
       // Navigator.pushNamedAndRemoveUntil(context, MyRoute.dashboard, (route) => false);
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -178,12 +178,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             child: Container(
               padding: const EdgeInsets.all(15),
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Icon(Icons.bar_chart),
                       Expanded(
                         child: Padding(
@@ -216,7 +216,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     direction: Axis.horizontal,
                     spacing: 10,
                     runSpacing: 10,
-                    children: const [
+                    children: [
                       DashboardMajorStatsBlock(
                         index: 1,
                         color: MyTheme.dashboard_1,
@@ -243,7 +243,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 10,
                   ),
                   Wrap(
@@ -251,7 +251,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     direction: Axis.horizontal,
                     spacing: 10,
                     runSpacing: 10,
-                    children: const [
+                    children: [
                       DashboardMinorStatBlock(
                         index: 1,
                         backgroundColor: MyTheme.dashboard_3,

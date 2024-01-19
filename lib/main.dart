@@ -1,7 +1,5 @@
 import 'package:d_cart_admin/providers/dashboard_provider.dart';
 import 'package:d_cart_admin/providers/login_provider.dart';
-import 'package:d_cart_admin/screens/dashboard.dart';
-import 'package:d_cart_admin/screens/login_screen.dart';
 import 'package:d_cart_admin/utils/my_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

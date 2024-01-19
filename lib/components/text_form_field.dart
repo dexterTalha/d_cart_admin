@@ -1,5 +1,4 @@
 import 'package:d_cart_admin/utils/mytheme.dart';
-import 'package:d_cart_admin/utils/mytheme.dart';
 import 'package:flutter/material.dart';
 
 class TextFormFieldComponent extends StatelessWidget {
@@ -13,8 +12,9 @@ class TextFormFieldComponent extends StatelessWidget {
   final FocusNode? focusNode;
   final TextEditingController? controller;
   final void Function(String)? onChange;
+  final String? Function(String?)? validator;
   const TextFormFieldComponent(
-      {Key? key,
+      {super.key,
       this.controller,
       this.onChange,
       this.focusNode,
@@ -24,8 +24,8 @@ class TextFormFieldComponent extends StatelessWidget {
       this.title,
       this.hint,
       this.hintStyle,
-      this.titleStyle})
-      : super(key: key);
+      this.titleStyle,
+      this.validator});
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,9 @@ class TextFormFieldComponent extends StatelessWidget {
             obscureText: isObscure ?? false,
             focusNode: focusNode,
             onChanged: onChange,
+            validator: validator,
             decoration: InputDecoration(
-              constraints: BoxConstraints(maxHeight: 50),
+              constraints: const BoxConstraints(maxHeight: 50),
               suffixIcon: suffixWidget,
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),

@@ -9,18 +9,19 @@ class MyRoute {
   static const String pos = "/home/pos";
   static final GoRouter router = GoRouter(
     initialLocation: login,
+
     // errorBuilder: ,
     routes: <GoRoute>[
       GoRoute(
         path: login,
         builder: (BuildContext context, GoRouterState state) {
-          return LoginScreen();
+          return const LoginScreen();
         },
       ),
       GoRoute(
         path: dashboard,
         builder: (BuildContext context, GoRouterState state) {
-          return DashboardScreen();
+          return const DashboardScreen();
         },
       ),
     ],
