@@ -9,13 +9,13 @@ class DashboardMinorStatBlock extends StatelessWidget {
   final String? title;
   final String? count;
   final Color? backgroundColor;
-  const DashboardMinorStatBlock({Key? key, this.index, this.title, this.count, this.backgroundColor}) : super(key: key);
+  const DashboardMinorStatBlock({super.key, this.index, this.title, this.count, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (_, cons) {
       return Container(
-        width: cons.maxWidth <= 360 ? cons.maxWidth : (cons.maxWidth * 0.24),
+        // width: cons.maxWidth <= 360 ? cons.maxWidth : (cons.maxWidth * 0.24),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: MyTheme.dashboardMinor,

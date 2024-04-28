@@ -17,7 +17,7 @@ import '../utils/my_routes.dart';
 import '../utils/responsive_builder.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -146,6 +146,59 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  final bottomList = [
+    const DashboardMinorStatBlock(
+      index: 1,
+      backgroundColor: MyTheme.dashboard_3,
+      title: "Delivered",
+      count: "24",
+    ),
+    const DashboardMinorStatBlock(
+      index: 2,
+      backgroundColor: MyTheme.dashboard_1,
+      title: "Cancelled",
+      count: "2",
+    ),
+    const DashboardMinorStatBlock(
+      index: 3,
+      backgroundColor: MyTheme.dashboard_4,
+      title: "Payment Failed",
+      count: "6",
+    ),
+    const DashboardMinorStatBlock(
+      index: 4,
+      backgroundColor: MyTheme.dashboard_2,
+      title: "Refunded",
+      count: "2",
+    ),
+  ];
+  final topList = [
+    const DashboardMajorStatsBlock(
+      index: 1,
+      color: MyTheme.dashboard_1,
+      title: "Unassigned orders",
+      count: "24",
+    ),
+    const DashboardMajorStatsBlock(
+      index: 2,
+      color: MyTheme.dashboard_2,
+      title: "Ongoing orders",
+      count: "2",
+    ),
+    const DashboardMajorStatsBlock(
+      index: 3,
+      color: MyTheme.dashboard_3,
+      title: "Preparing in stores",
+      count: "6",
+    ),
+    const DashboardMajorStatsBlock(
+      index: 4,
+      color: MyTheme.dashboard_4,
+      title: "Picked up",
+      count: "2",
+    ),
+  ];
+
   Widget mainWidget() {
     return Container(
       padding: const EdgeInsets.all(10),
@@ -178,11 +231,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             child: Container(
               padding: const EdgeInsets.all(15),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  const Row(
                     children: [
                       Icon(Icons.bar_chart),
                       Expanded(
@@ -195,88 +248,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ),
                       ),
-                      // DropdownButtonFormField(
-                      //   decoration: InputDecoration(
-                      //     border: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(10),
-                      //     ),
-                      //   ),
-                      //   value: "Overall Statistics",
-                      //   items: ["Overall Statistics", "Today's Statistics"]
-                      //       .map(
-                      //         (e) => DropdownMenuItem(value: e, child: Text(e)),
-                      //       )
-                      //       .toList(),
-                      //   onChanged: (st) {},
-                      // ),
                     ],
                   ),
-                  Wrap(
-                    alignment: WrapAlignment.spaceBetween,
-                    direction: Axis.horizontal,
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      DashboardMajorStatsBlock(
-                        index: 1,
-                        color: MyTheme.dashboard_1,
-                        title: "Unassigned orders",
-                        count: "24",
-                      ),
-                      DashboardMajorStatsBlock(
-                        index: 2,
-                        color: MyTheme.dashboard_2,
-                        title: "Ongoing orders",
-                        count: "2",
-                      ),
-                      DashboardMajorStatsBlock(
-                        index: 3,
-                        color: MyTheme.dashboard_3,
-                        title: "Preparing in stores",
-                        count: "6",
-                      ),
-                      DashboardMajorStatsBlock(
-                        index: 4,
-                        color: MyTheme.dashboard_4,
-                        title: "Picked up",
-                        count: "2",
-                      ),
-                    ],
+                  LayoutBuilder(
+                    builder: (context, constraint) {
+                      final maxWidth = constraint.maxWidth;
+                      var width = ResponsiveBuilder.isWeb(context) ? 250.0 : 170;
+                      var noOfBoxInRow = maxWidth ~/ width;
+
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        itemCount: topList.length,
+                        itemBuilder: (_, index) => topList[index],
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: noOfBoxInRow,
+                          mainAxisExtent: 150,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                      );
+                    },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Wrap(
-                    alignment: WrapAlignment.spaceBetween,
-                    direction: Axis.horizontal,
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      DashboardMinorStatBlock(
-                        index: 1,
-                        backgroundColor: MyTheme.dashboard_3,
-                        title: "Delivered",
-                        count: "24",
-                      ),
-                      DashboardMinorStatBlock(
-                        index: 2,
-                        backgroundColor: MyTheme.dashboard_1,
-                        title: "Cancelled",
-                        count: "2",
-                      ),
-                      DashboardMinorStatBlock(
-                        index: 3,
-                        backgroundColor: MyTheme.dashboard_4,
-                        title: "Payment Failed",
-                        count: "6",
-                      ),
-                      DashboardMinorStatBlock(
-                        index: 4,
-                        backgroundColor: MyTheme.dashboard_2,
-                        title: "Refunded",
-                        count: "2",
-                      ),
-                    ],
+                  LayoutBuilder(
+                    builder: (context, constraint) {
+                      final maxWidth = constraint.maxWidth;
+                      var width = ResponsiveBuilder.isWeb(context) ? 230.0 : 150;
+                      var noOfBoxInRow = maxWidth ~/ width;
+
+                      return GridView.builder(
+                        shrinkWrap: true,
+                        itemCount: bottomList.length,
+                        itemBuilder: (_, index) => bottomList[index],
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: noOfBoxInRow,
+                          mainAxisExtent: 80,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
